@@ -1,6 +1,5 @@
-using EatvardAPI;
 using EatvardAPI.Data;
-using EatvardAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllers();
+builder.Services.AddDbContext<EatvardContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration["Eatvard:AzureSqlServerConnectionString"]);
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -32,7 +35,7 @@ app.Run();
 
 
 
-EatvardContext dbContext = new(builder.Configuration["Eatvard:AzureSqlServerConnectionString"]);
+//EatvardContext dbContext = new(builder.Configuration["Eatvard:AzureSqlServerConnectionString"]);
 //var database = new PopulateDatabase(dbContext);
 //database.AddRestaurant("Diné", "DrottningGatan 31", "Gothenburg");
 //database.SaveChanges();

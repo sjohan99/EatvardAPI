@@ -5,13 +5,15 @@ namespace EatvardAPI.Data;
 
 public class EatvardContext : DbContext
 {
-    string? connectionString;
+    string? ConnectionString;
 
     public EatvardContext() { }
 
+    public EatvardContext(DbContextOptions<EatvardContext> options) : base(options) { }
+
     public EatvardContext(string connString)
     {
-        connectionString = connString;
+        ConnectionString = connString;
     }
 
     public DbSet<UserAccount> Users { get; set; } = null!;
@@ -21,13 +23,13 @@ public class EatvardContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        if (connectionString == null)
+        if (ConnectionString == null)
         {
-            throw new ArgumentNullException(nameof(connectionString));
-        }
+            optionsBuilder.UseSqlServer();
+        } 
         else
         {
-            optionsBuilder.UseSqlServer(connectionString!);
+            optionsBuilder.UseSqlServer(ConnectionString!);
         }
     }
 }
