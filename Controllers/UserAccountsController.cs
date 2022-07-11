@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EatvardAPI.Data;
 using EatvardAPI.Models;
+using Microsoft.Data.SqlClient;
 
 namespace EatvardAPI.Controllers
 {
@@ -91,8 +92,19 @@ namespace EatvardAPI.Controllers
                 return Problem("Entity set 'EatvardContext.Users'  is null.");
             }
             _context.Users.Add(userAccount);
-            await _context.SaveChangesAsync();
 
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException e)
+            {
+                if (e.InnerException is SqlException)
+                {
+                    return Problem("User email unavailable");
+                }
+            }
+            
             return CreatedAtAction("GetUserAccount", new { id = userAccount.Id }, userAccount);
         }
 
