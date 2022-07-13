@@ -9,8 +9,10 @@ namespace EatvardAPI.Models
         [ForeignKey("UserAccount")]
         public string UserAccountId { get; set; } = null!;
 
+        [MaxLength(500)]
         public string PasswordHash { get; set; } = null!;
 
+        [MaxLength(200)]
         public string PasswordSalt { get; set; } = null!;
     }
 }
