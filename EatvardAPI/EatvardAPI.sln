@@ -5,7 +5,9 @@ VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EatvardAPI", "EatvardAPI.csproj", "{8EB6ED63-1BA0-4F39-BAE6-B3F69BC09A93}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EatvardDataAccessLibrary", "..\EatvardDataAccessLibrary\EatvardDataAccessLibrary.csproj", "{EC3305B5-02E4-4F77-A00C-37F3654B7A57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EatvardDataAccessLibrary", "..\EatvardDataAccessLibrary\EatvardDataAccessLibrary.csproj", "{EC3305B5-02E4-4F77-A00C-37F3654B7A57}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "..\Domain\Domain.csproj", "{EFCF8C6E-78A6-40A7-B974-0621EBA1106A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{EC3305B5-02E4-4F77-A00C-37F3654B7A57}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC3305B5-02E4-4F77-A00C-37F3654B7A57}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC3305B5-02E4-4F77-A00C-37F3654B7A57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFCF8C6E-78A6-40A7-B974-0621EBA1106A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFCF8C6E-78A6-40A7-B974-0621EBA1106A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFCF8C6E-78A6-40A7-B974-0621EBA1106A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFCF8C6E-78A6-40A7-B974-0621EBA1106A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

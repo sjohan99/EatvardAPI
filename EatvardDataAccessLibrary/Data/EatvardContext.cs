@@ -1,7 +1,7 @@
-﻿using EatvardAPI.Models;
+﻿using EatvardDataAccessLibrary.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace EatvardAPI.Data;
+namespace EatvardDataAccessLibrary.Data;
 
 public class EatvardContext : DbContext
 {

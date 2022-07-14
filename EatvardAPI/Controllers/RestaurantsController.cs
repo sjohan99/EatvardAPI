@@ -1,8 +1,8 @@
-﻿using EatvardAPI.Models;
+﻿using EatvardDataAccessLibrary.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace EatvardAPI.Controllers
+namespace EatvardDataAccessLibrary.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

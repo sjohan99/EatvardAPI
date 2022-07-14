@@ -1,4 +1,7 @@
-global using EatvardAPI.Data;
+global using EatvardDataAccessLibrary.Data;
+using EatvardDataAccessLibrary;
+using EatvardDataAccessLibrary.Repositories;
+using EatvardDataAccessLibrary.Repositories.UserAccountRepository;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -8,6 +11,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllers();
+builder.Services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddTransient<IUserAccountRepository, UserAccountRepository>();
+builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddDbContext<EatvardContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));

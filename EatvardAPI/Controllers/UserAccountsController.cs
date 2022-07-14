@@ -5,32 +5,57 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using EatvardAPI.Data;
-using EatvardAPI.Models;
+using EatvardDataAccessLibrary.Data;
 using Microsoft.Data.SqlClient;
+using EatvardDataAccessLibrary.Repositories.UserAccountRepository;
+using EatvardDataAccessLibrary.Models;
 
-namespace EatvardAPI.Controllers
+namespace EatvardDataAccessLibrary.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class UserAccountsController : ControllerBase
     {
-        private readonly EatvardContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public UserAccountsController(EatvardContext context)
+        public UserAccountsController(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
+        [HttpGet("desc")]
+        public async Task<IActionResult> GetUsersByNameDescending()
+        {
+            var users = await _unitOfWork.UserAccounts.GetByNameDescendingAsync();
+            return Ok(users);
+        }
+
+        [HttpGet]
+        public IActionResult GetUsers()
+        {
+            var users = _unitOfWork.UserAccounts.GetAll();
+            return Ok(users);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<UserAccount>> PostUserAccount(UserAccount userAccount)
+        {
+            _unitOfWork.UserAccounts.Add(userAccount);
+            await _unitOfWork.CompleteAsync();
+            return CreatedAtAction("GetUserAccount", new { id = userAccount.Id }, userAccount);
+        }
+
+        /*
         // GET: api/UserAccounts
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserAccount>>> GetUsers()
         {
-            if (_context.Users == null)
+            var users = await _repo.GetUsers();
+            if (users == null)
             {
                 return NotFound();
             }
-            return await _context.Users.ToListAsync();
+            return users;
         }
 
         // GET: api/UserAccounts/5
@@ -101,7 +126,7 @@ namespace EatvardAPI.Controllers
             {
                 if (e.InnerException is SqlException)
                 {
-                    return Problem("User email unavailable");
+                    return Problem("SQLException, user email might be unavailable");
                 }
             }
             
@@ -132,5 +157,6 @@ namespace EatvardAPI.Controllers
         {
             return (_context.Users?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+        */
     }
 }

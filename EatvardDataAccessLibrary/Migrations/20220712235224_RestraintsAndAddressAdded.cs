@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace EatvardAPI.Migrations
+namespace EatvardDataAccessLibrary.Migrations
 {
     public partial class RestraintsAndAddressAdded : Migration
     {
