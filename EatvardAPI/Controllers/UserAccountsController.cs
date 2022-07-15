@@ -23,140 +23,79 @@ namespace EatvardDataAccessLibrary.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        [HttpGet("desc")]
-        public async Task<IActionResult> GetUsersByNameDescending()
+        [HttpGet]
+        public async Task<IActionResult> GetUsers()
         {
-            var users = await _unitOfWork.UserAccounts.GetByNameDescendingAsync();
+            var users = await _unitOfWork.UserAccounts.GetAllUsersAsync();
             return Ok(users);
         }
 
-        [HttpGet]
-        public IActionResult GetUsers()
+        [HttpGet("{id}")]
+        public async Task<ActionResult<UserAccount>> GetUserAccount(int id)
         {
-            var users = _unitOfWork.UserAccounts.GetAll();
-            return Ok(users);
+            var userAccount = await _unitOfWork.UserAccounts.GetUserByIdAsync(id);
+
+            if (userAccount == null) {
+                return NotFound();
+            }
+
+            return Ok(userAccount);
         }
 
         [HttpPost]
-        public async Task<ActionResult<UserAccount>> PostUserAccount(UserAccount userAccount)
+        public async Task<ActionResult<UserAccount>> CreateUserAccount(UserAccount userAccount)
         {
-            _unitOfWork.UserAccounts.Add(userAccount);
+            if (userAccount == null) {
+                return BadRequest("User account object is null");
+            }
+
+            if (!ModelState.IsValid) {
+                return BadRequest("Invalid model object");
+            }
+
+            _unitOfWork.UserAccounts.Create(userAccount);
             await _unitOfWork.CompleteAsync();
             return CreatedAtAction("GetUserAccount", new { id = userAccount.Id }, userAccount);
         }
 
-        /*
-        // GET: api/UserAccounts
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserAccount>>> GetUsers()
-        {
-            var users = await _repo.GetUsers();
-            if (users == null)
-            {
-                return NotFound();
-            }
-            return users;
-        }
-
-        // GET: api/UserAccounts/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<UserAccount>> GetUserAccount(int id)
-        {
-            if (_context.Users == null)
-            {
-                return NotFound();
-            }
-            var userAccount = await _context.Users.FindAsync(id);
-
-            if (userAccount == null)
-            {
-                return NotFound();
-            }
-
-            return userAccount;
-        }
-
-        // PUT: api/UserAccounts/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUserAccount(int id, UserAccount userAccount)
+        public async Task<IActionResult> UpdateUserAccount(int id, UserAccount userAccount)
         {
-            if (id != userAccount.Id)
-            {
-                return BadRequest();
+            if (userAccount == null) {
+                return BadRequest($"{nameof(userAccount)} object is null");
             }
 
-            _context.Entry(userAccount).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserAccountExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+            if (!ModelState.IsValid) {
+                return BadRequest("Invalid model object");
             }
 
+            var existing_user = await _unitOfWork.UserAccounts.GetUserByIdAsync(id);
+
+            if (existing_user == null) {
+                return NotFound();
+            }
+
+            if (existing_user.Id != userAccount.Id) {
+                userAccount.Id = existing_user.Id;
+            }
+
+            _unitOfWork.UserAccounts.Update(userAccount);
+            _unitOfWork.Complete();
             return NoContent();
         }
 
-        // POST: api/UserAccounts
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<UserAccount>> PostUserAccount(UserAccount userAccount)
-        {
-            if (_context.Users == null)
-            {
-                return Problem("Entity set 'EatvardContext.Users'  is null.");
-            }
-            _context.Users.Add(userAccount);
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException e)
-            {
-                if (e.InnerException is SqlException)
-                {
-                    return Problem("SQLException, user email might be unavailable");
-                }
-            }
-            
-            return CreatedAtAction("GetUserAccount", new { id = userAccount.Id }, userAccount);
-        }
-
-        // DELETE: api/UserAccounts/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUserAccount(int id)
         {
-            if (_context.Users == null)
-            {
-                return NotFound();
-            }
-            var userAccount = await _context.Users.FindAsync(id);
-            if (userAccount == null)
-            {
+            var existing_user = await _unitOfWork.UserAccounts.GetUserByIdAsync(id);
+
+            if (existing_user == null) {
                 return NotFound();
             }
 
-            _context.Users.Remove(userAccount);
-            await _context.SaveChangesAsync();
-
+            _unitOfWork.UserAccounts.Delete(existing_user);
+            await _unitOfWork.CompleteAsync();
             return NoContent();
         }
-
-        private bool UserAccountExists(int id)
-        {
-            return (_context.Users?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
-        */
     }
 }
