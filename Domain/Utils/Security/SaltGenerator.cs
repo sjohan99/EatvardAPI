@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace EatvardAPI.Security;
+namespace Domain.Utils.Security;
 
 public static class SaltGenerator
 {

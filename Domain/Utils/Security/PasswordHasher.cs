@@ -1,4 +1,4 @@
-﻿namespace EatvardAPI.Security;
+﻿namespace Domain.Utils.Security;
 
 public abstract class PasswordHasher
 {
