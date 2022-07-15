@@ -10,9 +10,13 @@ public class UserAccountRepository : GenericRepository<UserAccount>, IUserAccoun
     {
     }
 
-    public async Task<IEnumerable<UserAccount>> GetByNameDescendingAsync()
+    public async Task<IEnumerable<UserAccount>> GetAllUsersAsync()
     {
-        return await _context.Users.OrderByDescending(d => d.FirstName).ToListAsync();
+        return await GetAll().ToListAsync();
     }
 
+    public async Task<UserAccount> GetUserByIdAsync(int id)
+    {
+        return await Find(user => user.Id == id).FirstOrDefaultAsync();
+    }
 }

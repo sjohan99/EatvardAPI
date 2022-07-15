@@ -12,5 +12,6 @@ public interface IUserAccountRepository : IGenericRepository<UserAccount>
     Task DeleteUser(int id);
     Task<UserAccount> CreateUser(UserAccount user);
     */
-    Task<IEnumerable<UserAccount>> GetByNameDescendingAsync();
+    Task<IEnumerable<UserAccount>> GetAllUsersAsync();
+    Task<UserAccount> GetUserByIdAsync(int id);
 }

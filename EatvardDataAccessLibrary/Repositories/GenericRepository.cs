@@ -1,4 +1,5 @@
 ﻿using EatvardDataAccessLibrary.Data;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace EatvardDataAccessLibrary.Repositories;
@@ -10,32 +11,37 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         _context = context;
     }
-    public void Add(T entity)
+    public void Create(T entity)
     {
         _context.Set<T>().Add(entity);
     }
-    public void AddRange(IEnumerable<T> entities)
+    public void CreateMultiple(IEnumerable<T> entities)
     {
         _context.Set<T>().AddRange(entities);
     }
-    public IEnumerable<T> Find(Expression<Func<T, bool>> expression)
+    public IQueryable<T> Find(Expression<Func<T, bool>> expression)
     {
-        return _context.Set<T>().Where(expression);
+        return _context.Set<T>().Where(expression).AsNoTracking();
     }
-    public IEnumerable<T> GetAll()
+    public IQueryable<T> GetAll()
     {
-        return _context.Set<T>().ToList();
+        return _context.Set<T>().AsNoTracking();
     }
     public T GetById(int id)
     {
         return _context.Set<T>().Find(id);
     }
-    public void Remove(T entity)
+    public void Delete(T entity)
     {
         _context.Set<T>().Remove(entity);
     }
-    public void RemoveRange(IEnumerable<T> entities)
+    public void DeleteMultiple(IEnumerable<T> entities)
     {
         _context.Set<T>().RemoveRange(entities);
+    }
+
+    public void Update(T entity)
+    {
+        _context.Set<T>().Update(entity);
     }
 }
