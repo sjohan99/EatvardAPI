@@ -5,13 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using EatvardDataAccessLibrary.Data;
-using Microsoft.Data.SqlClient;
-using EatvardDataAccessLibrary.Repositories.UserAccountRepository;
 using EatvardDataAccessLibrary.Models;
+using Microsoft.AspNetCore.Authorization;
+using Domain.Utils.Security;
+using Domain.DTOs;
 
 namespace EatvardDataAccessLibrary.Controllers
 {
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UserAccountsController : ControllerBase
@@ -42,10 +43,35 @@ namespace EatvardDataAccessLibrary.Controllers
             return Ok(userAccount);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<UserAccount>> CreateUserAccount(UserAccount userAccount)
+        [Authorize]
+        [HttpGet("authorized")]
+        public async Task<ActionResult<UserDTO>> GetAuthenticatedUser()
         {
-            if (userAccount == null) {
+            string email;
+            try {
+                email = HttpContext.User.Identity!.Name!;
+            }
+            catch (NullReferenceException) {
+                return Unauthorized();
+            }
+            
+
+            var user = await _unitOfWork.UserAccounts.Find(user => user.Email == email).FirstOrDefaultAsync();
+            var userDTO = new UserDTO() {
+                Email = user.Email,
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName
+            };
+            user.PasswordHash = "";
+            user.PasswordHash = "";
+            return Ok(userDTO);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<UserAccount>> CreateUserAccount(UserDTO userDTO)
+        {
+            if (userDTO == null) {
                 return BadRequest("User account object is null");
             }
 
@@ -53,9 +79,21 @@ namespace EatvardDataAccessLibrary.Controllers
                 return BadRequest("Invalid model object");
             }
 
-            _unitOfWork.UserAccounts.Create(userAccount);
+            var passwordHasher = PasswordHasherFactory.SHA256();
+            var passwordSalt = passwordHasher.GenerateSalt();
+            userDTO.Password = passwordHasher.Hash(userDTO.Password, passwordSalt);
+
+            var userEntity = new UserAccount() {
+                Email = userDTO.Email,
+                FirstName = userDTO.FirstName,
+                LastName = userDTO.LastName,
+                PasswordHash = userDTO.Password,
+                PasswordSalt = passwordSalt
+            };
+
+            _unitOfWork.UserAccounts.Create(userEntity);
             await _unitOfWork.CompleteAsync();
-            return CreatedAtAction("GetUserAccount", new { id = userAccount.Id }, userAccount);
+            return CreatedAtAction("GetUserAccount", new { id = userEntity.Id }, userDTO);
         }
 
         [HttpPut("{id}")]
