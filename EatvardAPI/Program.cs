@@ -1,7 +1,9 @@
 global using EatvardDataAccessLibrary.Data;
+using EatvardAPI.Handlers;
 using EatvardDataAccessLibrary;
 using EatvardDataAccessLibrary.Repositories;
 using EatvardDataAccessLibrary.Repositories.UserAccountRepository;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -19,6 +21,10 @@ builder.Services.AddDbContext<EatvardContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
     //options.UseSqlServer(builder.Configuration["Eatvard:AzureSqlServerConnectionString"]);
 });
+builder.Services
+    .AddAuthentication("BasicAuthentication")
+    .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -34,6 +40,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
