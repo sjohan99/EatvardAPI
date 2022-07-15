@@ -17,4 +17,10 @@ public class UserAccount
 
     [MaxLength(200)]
     public string Email { get; set; } = null!; // TODO require email format
+
+    [MaxLength(500)]
+    public string PasswordHash { get; set; } = null!;
+
+    [MaxLength(200)]
+    public string PasswordSalt { get; set; } = null!;
 }

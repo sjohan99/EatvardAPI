@@ -17,7 +17,6 @@ public class EatvardContext : DbContext
     }
 
     public DbSet<UserAccount> Users { get; set; } = null!;
-    public DbSet<UserAuthentication> UserAuthentications { get; set; } = null!;
     public DbSet<Restaurant> Restaurants { get; set; } = null!;
     public DbSet<Post> Posts { get; set; } = null!;
 
