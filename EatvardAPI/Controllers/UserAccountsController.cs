@@ -10,6 +10,11 @@ using Microsoft.AspNetCore.Authorization;
 using Domain.Utils.Security;
 using Domain.DTOs;
 using EatvardDataAccessLibrary.DTOExtensions;
+using EatvardAPI.JWT;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 
 namespace EatvardDataAccessLibrary.Controllers
 {
@@ -19,12 +24,15 @@ namespace EatvardDataAccessLibrary.Controllers
     public class UserAccountsController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly JWTUtils _jwtUtils;
 
-        public UserAccountsController(IUnitOfWork unitOfWork)
+        public UserAccountsController(IUnitOfWork unitOfWork, JWTUtils jwtUtils)
         {
             _unitOfWork = unitOfWork;
+            _jwtUtils = jwtUtils;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetUsers()
         {
@@ -44,22 +52,29 @@ namespace EatvardDataAccessLibrary.Controllers
             return Ok(userAccount);
         }
 
-        [Authorize]
-        [HttpGet("authorized")]
-        public async Task<ActionResult<UserDTO>> GetAuthenticatedUser()
+        [HttpPost("Login")]
+        public async Task<ActionResult<UserDTO>> Login(LoginUserDTO loginUserDTO)
         {
-            string email;
-            try {
-                email = HttpContext.User.Identity!.Name!;
-            }
-            catch (NullReferenceException) {
+            var existingUser = await _unitOfWork.UserAccounts.Find(user => user.Email == loginUserDTO.Email).FirstOrDefaultAsync();
+
+            if (existingUser == null) 
+            {
                 return Unauthorized();
             }
-            
 
-            var user = await _unitOfWork.UserAccounts.Find(user => user.Email == email).FirstOrDefaultAsync();
+            bool verified = PasswordVerifier.Verify(
+                loginUserDTO.Password,
+                existingUser.PasswordHash,
+                existingUser.PasswordSalt);
+
+            if (!verified) 
+            {
+                return Unauthorized("Invalid email or password");
+            }
+
+            existingUser.JWTToken = _jwtUtils.GenerateToken(existingUser.Email);
             
-            return Ok(user.asDTO());
+            return Ok(existingUser.asDTO());
         }
 
         [HttpPost]
