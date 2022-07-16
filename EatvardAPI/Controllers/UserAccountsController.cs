@@ -9,6 +9,7 @@ using EatvardDataAccessLibrary.Models;
 using Microsoft.AspNetCore.Authorization;
 using Domain.Utils.Security;
 using Domain.DTOs;
+using EatvardDataAccessLibrary.DTOExtensions;
 
 namespace EatvardDataAccessLibrary.Controllers
 {
@@ -57,15 +58,8 @@ namespace EatvardDataAccessLibrary.Controllers
             
 
             var user = await _unitOfWork.UserAccounts.Find(user => user.Email == email).FirstOrDefaultAsync();
-            var userDTO = new UserDTO() {
-                Email = user.Email,
-                Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName
-            };
-            user.PasswordHash = "";
-            user.PasswordHash = "";
-            return Ok(userDTO);
+            
+            return Ok(user.asDTO());
         }
 
         [HttpPost]
