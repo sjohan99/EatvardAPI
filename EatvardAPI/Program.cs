@@ -1,5 +1,6 @@
 global using EatvardDataAccessLibrary.Data;
 using EatvardAPI.Handlers;
+using EatvardAPI.JWT;
 using EatvardDataAccessLibrary;
 using EatvardDataAccessLibrary.Repositories;
 using EatvardDataAccessLibrary.Repositories.UserAccountRepository;
@@ -21,6 +22,7 @@ builder.Services.AddDbContext<EatvardContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
     //options.UseSqlServer(builder.Configuration["Eatvard:AzureSqlServerConnectionString"]);
 });
+builder.Services.AddTransient<JWTSettings>();
 builder.Services
     .AddAuthentication("BasicAuthentication")
     .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
