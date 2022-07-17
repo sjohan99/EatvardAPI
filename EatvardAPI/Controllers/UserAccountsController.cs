@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using EatvardDataAccessLibrary.Models;
 using Microsoft.AspNetCore.Authorization;
 using Domain.Utils.Security;
@@ -52,35 +51,10 @@ namespace EatvardDataAccessLibrary.Controllers
             return Ok(userAccount);
         }
 
-        [HttpPost("Login")]
-        public async Task<ActionResult<UserDTO>> Login(LoginUserDTO loginUserDTO)
-        {
-            var existingUser = await _unitOfWork.UserAccounts.Find(user => user.Email == loginUserDTO.Email).FirstOrDefaultAsync();
-
-            if (existingUser == null) 
-            {
-                return Unauthorized();
-            }
-
-            bool verified = PasswordVerifier.Verify(
-                loginUserDTO.Password,
-                existingUser.PasswordHash,
-                existingUser.PasswordSalt);
-
-            if (!verified) 
-            {
-                return Unauthorized("Invalid email or password");
-            }
-
-            existingUser.JWTToken = _jwtUtils.GenerateToken(existingUser.Email);
-            
-            return Ok(existingUser.asDTO());
-        }
-
         [HttpPost]
-        public async Task<ActionResult<UserAccount>> CreateUserAccount(UserDTO userDTO)
+        public async Task<ActionResult<UserAccount>> CreateUserAccount(CreateUserDTO createUserDTO)
         {
-            if (userDTO == null) {
+            if (createUserDTO == null) {
                 return BadRequest("User account object is null");
             }
 
@@ -90,26 +64,26 @@ namespace EatvardDataAccessLibrary.Controllers
 
             var passwordHasher = PasswordHasherFactory.SHA256();
             var passwordSalt = passwordHasher.GenerateSalt();
-            userDTO.Password = passwordHasher.Hash(userDTO.Password, passwordSalt);
+            createUserDTO.Password = passwordHasher.Hash(createUserDTO.Password, passwordSalt);
 
             var userEntity = new UserAccount() {
-                Email = userDTO.Email,
-                FirstName = userDTO.FirstName,
-                LastName = userDTO.LastName,
-                PasswordHash = userDTO.Password,
+                Email = createUserDTO.Email,
+                FirstName = createUserDTO.FirstName,
+                LastName = createUserDTO.LastName,
+                PasswordHash = createUserDTO.Password,
                 PasswordSalt = passwordSalt
             };
 
             _unitOfWork.UserAccounts.Create(userEntity);
             await _unitOfWork.CompleteAsync();
-            return CreatedAtAction("GetUserAccount", new { id = userEntity.Id }, userDTO);
+            return CreatedAtAction("GetUserAccount", new { id = userEntity.Id }, userEntity.asDTO());
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUserAccount(int id, UserAccount userAccount)
+        public async Task<IActionResult> UpdateUserAccount(int id, UpdateUserDTO updateUserDTO)
         {
-            if (userAccount == null) {
-                return BadRequest($"{nameof(userAccount)} object is null");
+            if (updateUserDTO == null) {
+                return BadRequest($"{nameof(updateUserDTO)} object is null");
             }
 
             if (!ModelState.IsValid) {
@@ -122,11 +96,16 @@ namespace EatvardDataAccessLibrary.Controllers
                 return NotFound();
             }
 
-            if (existing_user.Id != userAccount.Id) {
-                userAccount.Id = existing_user.Id;
+            if (updateUserDTO.FirstName != null) 
+            {
+                existing_user.FirstName = updateUserDTO.FirstName;
+            }
+            if (updateUserDTO.LastName != null) 
+            {
+                existing_user.LastName = updateUserDTO.LastName;
             }
 
-            _unitOfWork.UserAccounts.Update(userAccount);
+            _unitOfWork.UserAccounts.Update(existing_user);
             _unitOfWork.Complete();
             return NoContent();
         }
