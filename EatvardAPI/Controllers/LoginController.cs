@@ -24,7 +24,7 @@ public class LoginController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<UserDTO>> Login(LoginUserDTO loginUserDTO)
     {
-        var existingUser = await _unitOfWork.UserAccounts.FindOneAsync(user => user.Email == loginUserDTO.Email);
+        var existingUser = await _unitOfWork.Users.FindOneAsync(user => user.Email == loginUserDTO.Email);
 
         if (existingUser == null) {
             return Unauthorized();

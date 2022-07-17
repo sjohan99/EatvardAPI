@@ -5,23 +5,23 @@ using System.Linq.Expressions;
 
 namespace EatvardDataAccessLibrary.Repositories.UserAccountRepository;
 
-public class UserAccountRepository : GenericRepository<UserAccount>, IUserAccountRepository
+public class UserRepository : GenericRepository<User>, IUserRepository
 {
-    public UserAccountRepository(EatvardContext context) : base(context)
+    public UserRepository(EatvardContext context) : base(context)
     {
     }
 
-    public async Task<UserAccount?> FindOneAsync(Expression<Func<UserAccount, bool>> expression)
+    public async Task<User?> FindOneAsync(Expression<Func<User, bool>> expression)
     {
         return await Find(expression).FirstOrDefaultAsync();
     }
 
-    public async Task<IEnumerable<UserAccount>> GetAllUsersAsync()
+    public async Task<IEnumerable<User>> GetAllUsersAsync()
     {
         return await GetAll().ToListAsync();
     }
 
-    public async Task<UserAccount?> GetUserByIdAsync(int id)
+    public async Task<User?> GetUserByIdAsync(int id)
     {
         return await Find(user => user.Id == id).FirstOrDefaultAsync();
     }

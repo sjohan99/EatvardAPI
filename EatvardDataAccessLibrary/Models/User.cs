@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace EatvardDataAccessLibrary.Models;
 
 [Index(nameof(Email), IsUnique = true)]
-public class UserAccount
+public class User
 {
     [Key]
     public int Id { get; set; }

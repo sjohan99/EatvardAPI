@@ -20,39 +20,38 @@ namespace EatvardDataAccessLibrary.Controllers
     //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class UserAccountsController : ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly JWTUtils _jwtUtils;
 
-        public UserAccountsController(IUnitOfWork unitOfWork, JWTUtils jwtUtils)
+        public UsersController(IUnitOfWork unitOfWork, JWTUtils jwtUtils)
         {
             _unitOfWork = unitOfWork;
             _jwtUtils = jwtUtils;
         }
 
-        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetUsers()
         {
-            var users = await _unitOfWork.UserAccounts.GetAllUsersAsync();
-            return Ok(users);
+            var users = await _unitOfWork.Users.GetAllUsersAsync();
+            return Ok(users); // Unsafe, returns hashed passwords
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserAccount>> GetUserAccount(int id)
+        public async Task<ActionResult<User>> GetUser(int id)
         {
-            var userAccount = await _unitOfWork.UserAccounts.GetUserByIdAsync(id);
+            var user = await _unitOfWork.Users.GetUserByIdAsync(id);
 
-            if (userAccount == null) {
+            if (user == null) {
                 return NotFound();
             }
 
-            return Ok(userAccount);
+            return Ok(user);
         }
 
         [HttpPost]
-        public async Task<ActionResult<UserAccount>> CreateUserAccount(CreateUserDTO createUserDTO)
+        public async Task<ActionResult<User>> CreateUser(CreateUserDTO createUserDTO)
         {
             if (createUserDTO == null) {
                 return BadRequest("User account object is null");
@@ -66,7 +65,7 @@ namespace EatvardDataAccessLibrary.Controllers
             var passwordSalt = passwordHasher.GenerateSalt();
             createUserDTO.Password = passwordHasher.Hash(createUserDTO.Password, passwordSalt);
 
-            var userEntity = new UserAccount() {
+            var userEntity = new User() {
                 Email = createUserDTO.Email,
                 FirstName = createUserDTO.FirstName,
                 LastName = createUserDTO.LastName,
@@ -74,13 +73,13 @@ namespace EatvardDataAccessLibrary.Controllers
                 PasswordSalt = passwordSalt
             };
 
-            _unitOfWork.UserAccounts.Create(userEntity);
+            _unitOfWork.Users.Create(userEntity);
             await _unitOfWork.CompleteAsync();
-            return CreatedAtAction("GetUserAccount", new { id = userEntity.Id }, userEntity.asDTO());
+            return CreatedAtAction("GetUser", new { id = userEntity.Id }, userEntity.asDTO());
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUserAccount(int id, UpdateUserDTO updateUserDTO)
+        public async Task<IActionResult> UpdateUser(int id, UpdateUserDTO updateUserDTO)
         {
             if (updateUserDTO == null) {
                 return BadRequest($"{nameof(updateUserDTO)} object is null");
@@ -90,7 +89,7 @@ namespace EatvardDataAccessLibrary.Controllers
                 return BadRequest("Invalid model object");
             }
 
-            var existing_user = await _unitOfWork.UserAccounts.GetUserByIdAsync(id);
+            var existing_user = await _unitOfWork.Users.GetUserByIdAsync(id);
 
             if (existing_user == null) {
                 return NotFound();
@@ -105,21 +104,21 @@ namespace EatvardDataAccessLibrary.Controllers
                 existing_user.LastName = updateUserDTO.LastName;
             }
 
-            _unitOfWork.UserAccounts.Update(existing_user);
+            _unitOfWork.Users.Update(existing_user);
             _unitOfWork.Complete();
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUserAccount(int id)
+        public async Task<IActionResult> DeleteUser(int id)
         {
-            var existing_user = await _unitOfWork.UserAccounts.GetUserByIdAsync(id);
+            var existing_user = await _unitOfWork.Users.GetUserByIdAsync(id);
 
             if (existing_user == null) {
                 return NotFound();
             }
 
-            _unitOfWork.UserAccounts.Delete(existing_user);
+            _unitOfWork.Users.Delete(existing_user);
             await _unitOfWork.CompleteAsync();
             return NoContent();
         }

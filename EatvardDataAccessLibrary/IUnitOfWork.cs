@@ -9,7 +9,7 @@ namespace EatvardDataAccessLibrary;
 
 public interface IUnitOfWork : IDisposable
 {
-    IUserAccountRepository UserAccounts { get; }
+    IUserRepository Users { get; }
     int Complete();
     Task<int> CompleteAsync();
 }

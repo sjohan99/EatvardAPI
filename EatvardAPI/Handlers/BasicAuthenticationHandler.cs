@@ -38,7 +38,7 @@ public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSc
             var password = credentials.Password;
             var passwordHasher = PasswordHasherFactory.SHA256();
 
-            var user = _unitOfWork.UserAccounts.Find(user => user.Email == email).FirstOrDefault();
+            var user = _unitOfWork.Users.Find(user => user.Email == email).FirstOrDefault();
             if (user == null) {
                 return AuthenticateResult.Fail($"No user with email {email} found");
             }
@@ -65,7 +65,7 @@ public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSc
         return new Base64CredentialsParser(authenticationHeaderValue.Parameter);
     }
 
-    private AuthenticationTicket getAuthenticationTicket(EatvardDataAccessLibrary.Models.UserAccount user)
+    private AuthenticationTicket getAuthenticationTicket(EatvardDataAccessLibrary.Models.User user)
     {
         var claims = new[] { new Claim(ClaimTypes.Name, user.Email) };
         var identity = new ClaimsIdentity(claims, Scheme.Name);

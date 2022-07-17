@@ -7,7 +7,7 @@ public class Post
     [Key]
     public int Id { get; set; }
 
-    public UserAccount Author { get; set; } = null!;
+    public User Author { get; set; } = null!;
 
     public Restaurant? Restaurant { get; set; }
 

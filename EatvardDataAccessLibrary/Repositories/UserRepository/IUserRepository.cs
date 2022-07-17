@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace EatvardDataAccessLibrary.Repositories.UserAccountRepository;
 
-public interface IUserAccountRepository : IGenericRepository<UserAccount>
+public interface IUserRepository : IGenericRepository<User>
 {
     /*
     Task<IEnumerable<UserAccount>> GetUsers();
@@ -13,7 +13,7 @@ public interface IUserAccountRepository : IGenericRepository<UserAccount>
     Task DeleteUser(int id);
     Task<UserAccount> CreateUser(UserAccount user);
     */
-    Task<IEnumerable<UserAccount>> GetAllUsersAsync();
-    Task<UserAccount?> GetUserByIdAsync(int id);
-    Task<UserAccount?> FindOneAsync(Expression<Func<UserAccount, bool>> expression);
+    Task<IEnumerable<User>> GetAllUsersAsync();
+    Task<User?> GetUserByIdAsync(int id);
+    Task<User?> FindOneAsync(Expression<Func<User, bool>> expression);
 }

@@ -11,11 +11,11 @@ namespace EatvardDataAccessLibrary;
 public class UnitOfWork : IUnitOfWork
 {
     private readonly EatvardContext _context;
-    public IUserAccountRepository UserAccounts { get; private set; }
+    public IUserRepository Users { get; private set; }
     public UnitOfWork(EatvardContext context)
     {
         _context = context;
-        UserAccounts = new UserAccountRepository(context);
+        Users = new UserRepository(context);
     }
 
     public void Dispose()
