@@ -4,7 +4,7 @@ namespace EatvardDataAccessLibrary.Repositories;
 
 public interface IGenericRepository<T> where T : class
 {
-    T GetById(int id);
+    T? GetById(int id);
     IQueryable<T> GetAll();
     IQueryable<T> Find(Expression<Func<T, bool>> expression);
     void Create(T entity);
