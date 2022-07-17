@@ -10,7 +10,7 @@ namespace EatvardDataAccessLibrary.DTOExtensions;
 
 public static class UserDTOExtensions
 {
-    public static UserDTO asDTO(this UserAccount userAccount)
+    public static UserDTO asDTO(this UserAccount userAccount, string? jwtToken = null)
     {
         return new UserDTO
         {
@@ -18,7 +18,7 @@ public static class UserDTOExtensions
             FirstName = userAccount.FirstName,
             LastName = userAccount.LastName,
             Email = userAccount.Email,
-            JWTToken = userAccount.JWTToken
+            JWTToken = jwtToken
         };
     }
 }
