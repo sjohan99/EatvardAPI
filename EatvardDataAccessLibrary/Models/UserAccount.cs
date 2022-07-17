@@ -23,7 +23,4 @@ public class UserAccount
 
     [MaxLength(200)]
     public string PasswordSalt { get; set; } = null!;
-
-    [MaxLength(500)]
-    public string? JWTToken { get; set; }
 }
