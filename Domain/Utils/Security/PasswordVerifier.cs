@@ -8,10 +8,9 @@ namespace Domain.Utils.Security;
 
 public static class PasswordVerifier
 {
-    public static bool Verify(string unhashedPassword, string storedHashedPassword, string salt)
+    public static bool Verify(string unhashedPassword, string storedHashedPassword, string salt, PasswordHasher hasher)
     {
-        var passwordHasher = PasswordHasherFactory.SHA256();
-        var hashedPassword = passwordHasher.Hash(unhashedPassword, salt);
+        var hashedPassword = hasher.Hash(unhashedPassword, salt);
         if (hashedPassword != storedHashedPassword)
         {
             return false;

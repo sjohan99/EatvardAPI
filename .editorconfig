@@ -12,7 +12,7 @@ indent_style = space
 #Formatting - new line options
 
 #require braces to be on a new line for types and methods (also known as "Allman" style)
-csharp_new_line_before_open_brace = types, methods
+csharp_new_line_before_open_brace = all
 
 #Formatting - organize using options
 
@@ -163,3 +163,4 @@ dotnet_naming_style.pascal_case.required_prefix =
 dotnet_naming_style.pascal_case.required_suffix = 
 dotnet_naming_style.pascal_case.word_separator = 
 dotnet_naming_style.pascal_case.capitalization = pascal_case
+dotnet_style_allow_statement_immediately_after_block_experimental = true:silent

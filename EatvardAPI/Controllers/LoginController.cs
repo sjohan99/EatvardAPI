@@ -33,7 +33,8 @@ public class LoginController : ControllerBase
         bool verified = PasswordVerifier.Verify(
             loginUserDTO.Password,
             existingUser.PasswordHash,
-            existingUser.PasswordSalt);
+            existingUser.PasswordSalt,
+            PasswordHasherFactory.SHA256());
 
         if (!verified) {
             return Unauthorized("Invalid email or password");
