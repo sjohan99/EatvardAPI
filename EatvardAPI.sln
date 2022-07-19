@@ -14,7 +14,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Tests", "Domain.Tests\Domain.Tests.csproj", "{225E703E-0AAA-4DCC-8559-E195DAD3F90F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Tests", "Domain.Tests\Domain.Tests.csproj", "{225E703E-0AAA-4DCC-8559-E195DAD3F90F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EatvardAPI.Tests", "EatvardAPI.Tests\EatvardAPI.Tests.csproj", "{799AFDF6-626D-44A5-95E3-98FB2B00DE4F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,6 +40,10 @@ Global
 		{225E703E-0AAA-4DCC-8559-E195DAD3F90F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{225E703E-0AAA-4DCC-8559-E195DAD3F90F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{225E703E-0AAA-4DCC-8559-E195DAD3F90F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{799AFDF6-626D-44A5-95E3-98FB2B00DE4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{799AFDF6-626D-44A5-95E3-98FB2B00DE4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{799AFDF6-626D-44A5-95E3-98FB2B00DE4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{799AFDF6-626D-44A5-95E3-98FB2B00DE4F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

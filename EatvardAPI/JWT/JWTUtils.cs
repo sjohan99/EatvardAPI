@@ -8,12 +8,18 @@ namespace EatvardAPI.JWT;
 public class JWTUtils
 {
     public readonly string _secretKey;
-    private IConfiguration _configuration;
+    private readonly IConfiguration? _configuration;
 
     public JWTUtils(IConfiguration configuration)
     {
         _configuration = configuration;
         _secretKey = configuration["Eatvard:JWTSettings"];
+    }
+
+    public JWTUtils(string jwtSecretKey)
+    {
+        _configuration = null;
+        _secretKey = jwtSecretKey;
     }
 
     public string GenerateToken(string email)
