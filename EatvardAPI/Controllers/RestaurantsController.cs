@@ -1,52 +1,88 @@
-﻿using EatvardDataAccessLibrary.Models;
+﻿using Domain.DTOs.Restaurant;
+using EatvardDataAccessLibrary.DTOExtensions;
+using EatvardDataAccessLibrary.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace EatvardDataAccessLibrary.Controllers
+namespace EatvardDataAccessLibrary.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class RestaurantsController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class RestaurantsController : ControllerBase
+    private readonly IUnitOfWork _unitOfWork;
+
+    public RestaurantsController(IUnitOfWork unitOfWork)
     {
-        private readonly EatvardContext _context;
+        _unitOfWork = unitOfWork;
+    }
 
-        public RestaurantsController(EatvardContext context)
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Restaurant>>> GetRestaurants()
+    {
+        var restaurants = await _unitOfWork.Restaurants.GetAllAsync();
+        return Ok(restaurants);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Restaurant>> GetRestaurant(int id)
+    {
+        var restaurant = await _unitOfWork.Restaurants.GetAsync(id);
+        if (restaurant == null)
         {
-            _context = context;
+            return NotFound();
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Restaurant>>> GetRestaurants()
+        return Ok(restaurant);
+    }
+
+    /*
+    [HttpGet("by/{name}")]
+    public async Task<ActionResult<IEnumerable<Restaurant>>> GetRestaurantsWithName(string name)
+    {
+        var restaurants = await _unitOfWork.Restaurants.FindManyByName(name);
+        return Ok(restaurants);
+    }
+    */
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateRestaurant(int id, UpdateRestaurantDTO restaurantDTO)
+    {
+        var existing_restaurant = await _unitOfWork.Restaurants.GetAsync(id);
+
+        if (existing_restaurant == null)
         {
-            if (_context.Restaurants == null)
+            return BadRequest($"No restaurant with id {id}");
+        }
+
+        existing_restaurant.UpdateFromDTO(restaurantDTO);
+        await _unitOfWork.CompleteAsync();
+        return NoContent();
+
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateRestaurant(CreateRestaurantDTO restaurantDTO)
+    {
+        var restaurantEntity = new Restaurant()
+        {
+            Name = restaurantDTO.Name,
+            Address = new Address()
             {
-                return NotFound();
+                StreetAddress = restaurantDTO.StreetAddress,
+                StreetNumber = restaurantDTO.StreetNumber,
+                City = restaurantDTO.City,
+                ZipCode = restaurantDTO.ZipCode,
+                State = restaurantDTO.State,
             }
-            return await _context.Restaurants.ToListAsync();
-        }
+        };
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Restaurant>> GetRestaurant(int id)
+        _unitOfWork.Restaurants.Create(restaurantEntity);
+        var success = await _unitOfWork.CompleteAsync();
+        if (success == 0)
         {
-            if (_context.Restaurants == null)
-            {
-                return NotFound();
-            }
-
-            var restaurant = await _context.Restaurants.FindAsync(id);
-
-            if (restaurant == null)
-            {
-                return NotFound();
-            }
-
-            return restaurant;
+            return BadRequest("Changes could not be saved");
         }
-
-        [HttpPut()]
-        public async Task<IActionResult> PutRestaurant(Restaurant restaurant)
-        {
-            return null;
-        }
+        return CreatedAtAction("GetRestaurant", new {id = restaurantEntity.Id}, restaurantEntity);
     }
 }

@@ -10,5 +10,5 @@ public class Restaurant
     [MaxLength(200)]
     public string Name { get; set; } = null!;
 
-    public Address Address { get; set; } = null!;
+    public virtual Address Address { get; set; } = null!;
 }

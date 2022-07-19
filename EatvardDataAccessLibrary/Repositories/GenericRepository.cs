@@ -21,11 +21,11 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     }
     public IQueryable<T> Find(Expression<Func<T, bool>> expression)
     {
-        return _context.Set<T>().Where(expression).AsNoTracking();
+        return _context.Set<T>().Where(expression);
     }
     public IQueryable<T> GetAll()
     {
-        return _context.Set<T>().AsNoTracking();
+        return _context.Set<T>();
     }
     public T? GetById(int id)
     {
@@ -43,5 +43,15 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     public void Update(T entity)
     {
         _context.Set<T>().Update(entity);
+    }
+
+    public async Task<IEnumerable<T>> GetAllAsync()
+    {
+        return await GetAll().ToListAsync();
+    }
+
+    public async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> expression)
+    {
+        return await Find(expression).ToListAsync();
     }
 }

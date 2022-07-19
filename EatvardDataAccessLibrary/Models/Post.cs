@@ -7,9 +7,9 @@ public class Post
     [Key]
     public int Id { get; set; }
 
-    public User Author { get; set; } = null!;
+    public virtual User Author { get; set; } = null!;
 
-    public Restaurant? Restaurant { get; set; }
+    public virtual Restaurant? Restaurant { get; set; }
 
     public string? AlternativeName { get; set; }
 

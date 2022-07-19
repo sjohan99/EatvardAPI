@@ -1,4 +1,5 @@
-﻿using EatvardDataAccessLibrary.Repositories.UserAccountRepository;
+﻿using EatvardDataAccessLibrary.Repositories.RestaurantRepository;
+using EatvardDataAccessLibrary.Repositories.UserAccountRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace EatvardDataAccessLibrary;
 public interface IUnitOfWork : IDisposable
 {
     IUserRepository Users { get; }
+    IRestaurantRepository Restaurants { get; }
     int Complete();
     Task<int> CompleteAsync();
 }
