@@ -21,8 +21,8 @@ builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddDbContext<EatvardContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-    //options.UseSqlServer(builder.Configuration["Eatvard:AzureSqlServerConnectionString"]);
+    // UseLazyLoadingProxies() in order for nested nested entities to be populated when querying.
+    options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
 builder.Services.AddTransient<JWTUtils>();
