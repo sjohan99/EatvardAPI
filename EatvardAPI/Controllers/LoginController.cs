@@ -41,9 +41,9 @@ public class LoginController : ControllerBase
         }
 
         var token = _jwtUtils.GenerateToken(existingUser.Email);
-        var userDTO = existingUser.asDTO();
+        var userDTO = existingUser.AsDTO();
         userDTO.JWTToken = token;
 
-        return Ok(existingUser.asDTO(token));
+        return Ok(existingUser.AsDTO(token));
     }
 }

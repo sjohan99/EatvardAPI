@@ -18,7 +18,7 @@ public class UserRepository : GenericRepository<User>, IUserRepository
 
     public async Task<IEnumerable<User>> GetAllUsersAsync()
     {
-        return await GetAll().ToListAsync();
+        return await GetAllAsync();
     }
 
     public async Task<User?> GetUserByIdAsync(int id)

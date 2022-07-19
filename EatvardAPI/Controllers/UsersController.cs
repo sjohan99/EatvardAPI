@@ -17,7 +17,7 @@ using System.Security.Claims;
 
 namespace EatvardDataAccessLibrary.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -74,8 +74,12 @@ namespace EatvardDataAccessLibrary.Controllers
             };
 
             _unitOfWork.Users.Create(userEntity);
-            await _unitOfWork.CompleteAsync();
-            return CreatedAtAction("GetUser", new { id = userEntity.Id }, userEntity.asDTO());
+            var success = await _unitOfWork.CompleteAsync();
+            if (success == 0)
+            {
+                return BadRequest("Changes could not be saved");
+            }
+            return CreatedAtAction("GetUser", new { id = userEntity.Id }, userEntity.AsDTO());
         }
 
         [HttpPut("{id}")]
@@ -105,7 +109,7 @@ namespace EatvardDataAccessLibrary.Controllers
             }
 
             _unitOfWork.Users.Update(existing_user);
-            _unitOfWork.Complete();
+            await _unitOfWork.CompleteAsync();
             return NoContent();
         }
 
