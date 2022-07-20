@@ -17,7 +17,7 @@ using System.Security.Claims;
 
 namespace EatvardDataAccessLibrary.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -32,14 +32,15 @@ namespace EatvardDataAccessLibrary.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetUsers()
+        public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
         {
             var users = await _unitOfWork.Users.GetAllUsersAsync();
-            return Ok(users); // Unsafe, returns hashed passwords
+            var userDTOs = from user in users select user.AsDTO();
+            return Ok(userDTOs);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
+        public async Task<ActionResult<UserDTO>> GetUser(int id)
         {
             var user = await _unitOfWork.Users.GetUserByIdAsync(id);
 
@@ -47,11 +48,11 @@ namespace EatvardDataAccessLibrary.Controllers
                 return NotFound();
             }
 
-            return Ok(user);
+            return Ok(user.AsDTO());
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> CreateUser(CreateUserDTO createUserDTO)
+        public async Task<ActionResult<UserDTO>> CreateUser(CreateUserDTO createUserDTO)
         {
             if (createUserDTO == null) {
                 return BadRequest("User account object is null");
