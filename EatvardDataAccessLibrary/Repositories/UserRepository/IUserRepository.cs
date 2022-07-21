@@ -1,8 +1,7 @@
-﻿using EatvardDataAccessLibrary.Repositories;
-using EatvardDataAccessLibrary.Models;
+﻿using EatvardDataAccessLibrary.Models;
 using System.Linq.Expressions;
 
-namespace EatvardDataAccessLibrary.Repositories.UserAccountRepository;
+namespace EatvardDataAccessLibrary.Repositories.UserRepository;
 
 public interface IUserRepository : IGenericRepository<User>
 {

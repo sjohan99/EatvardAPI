@@ -3,7 +3,7 @@ using EatvardDataAccessLibrary.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace EatvardDataAccessLibrary.Repositories.UserAccountRepository;
+namespace EatvardDataAccessLibrary.Repositories.UserRepository;
 
 public class UserRepository : GenericRepository<User>, IUserRepository
 {
