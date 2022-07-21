@@ -1,6 +1,6 @@
 ﻿using EatvardDataAccessLibrary.Data;
 using EatvardDataAccessLibrary.Repositories.RestaurantRepository;
-using EatvardDataAccessLibrary.Repositories.UserAccountRepository;
+using EatvardDataAccessLibrary.Repositories.UserRepository;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -15,11 +15,13 @@ public class UnitOfWork : IUnitOfWork
     private readonly EatvardContext _context;
     public IUserRepository Users { get; private set; }
     public IRestaurantRepository Restaurants { get; private set; }
-    public UnitOfWork(EatvardContext context)
+    public UnitOfWork(EatvardContext context,
+                      IUserRepository userRepository,
+                      IRestaurantRepository restaurantRepository)
     {
         _context = context;
-        Users = new UserRepository(context);
-        Restaurants = new RestaurantRepository(context);
+        Users = userRepository;
+        Restaurants = restaurantRepository;
     }
 
     public void Dispose()

@@ -1,14 +1,5 @@
 global using EatvardDataAccessLibrary.Data;
-using System.Text;
-using EatvardAPI.Handlers;
-using EatvardAPI.JWT;
-using EatvardDataAccessLibrary;
-using EatvardDataAccessLibrary.Repositories;
-using EatvardDataAccessLibrary.Repositories.UserAccountRepository;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
+global using EatvardAPI;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,33 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllers();
-builder.Services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-builder.Services.AddTransient<IUserRepository, UserRepository>();
-builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
-builder.Services.AddDbContext<EatvardContext>(options =>
-{
-    // UseLazyLoadingProxies() in order for nested nested entities to be populated when querying.
-    options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
 
-builder.Services.AddTransient<JWTUtils>();
-
-var jwtKey = Encoding.ASCII.GetBytes(builder.Configuration["Eatvard:JWTSettings"]);
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options => {
-    options.RequireHttpsMetadata = true;
-    options.SaveToken = true;
-    options.TokenValidationParameters = new TokenValidationParameters {
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(jwtKey),
-        ValidateIssuer = false,
-        ValidateAudience = false,
-    };
-});
+builder.Services.AddEFCoreDataAccess(builder.Configuration);
+builder.Services.AddJWT(builder.Configuration);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

@@ -1,5 +1,5 @@
 ﻿using EatvardDataAccessLibrary.Repositories.RestaurantRepository;
-using EatvardDataAccessLibrary.Repositories.UserAccountRepository;
+using EatvardDataAccessLibrary.Repositories.UserRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
