@@ -1,6 +1,6 @@
-﻿using Domain.DTOs.Restaurant;
-using EatvardDataAccessLibrary.DTOExtensions;
-using EatvardDataAccessLibrary.Models;
+﻿using Domain.DTOs;
+using Domain.Models;
+using Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

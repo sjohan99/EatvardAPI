@@ -1,4 +1,5 @@
-﻿using EatvardDataAccessLibrary.Models;
+﻿using Domain.Models;
+using EatvardDataAccessLibrary.Data.FluentExtensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace EatvardDataAccessLibrary.Data;
@@ -19,6 +20,7 @@ public class EatvardContext : DbContext
     public DbSet<User> Users { get; set; } = null!;
     public DbSet<Restaurant> Restaurants { get; set; } = null!;
     public DbSet<Post> Posts { get; set; } = null!;
+    //public DbSet<Address> Addresses { get; set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -34,11 +36,9 @@ public class EatvardContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<User>()
-            .HasIndex(u => u.Email)
-            .IsUnique();
-
-        modelBuilder.Entity<Restaurant>().HasIndex(r => r.Name).IsUnique();
+        modelBuilder.EnforceUniqueUserEmail();
     }
+
+    
 }
 

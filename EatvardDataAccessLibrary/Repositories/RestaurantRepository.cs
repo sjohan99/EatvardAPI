@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Models;
+using Domain.Repositories;
 using EatvardDataAccessLibrary.Data;
-using EatvardDataAccessLibrary.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace EatvardDataAccessLibrary.Repositories.RestaurantRepository;

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace EatvardDataAccessLibrary.Models;
+namespace Domain.Models;
 
 public class Post
 {
@@ -18,5 +18,5 @@ public class Post
 
     public int Cost { get; set; }
 
-    public virtual DateTime CreatedAt { get; set; } 
+    public virtual DateTime CreatedAt { get; set; }
 }

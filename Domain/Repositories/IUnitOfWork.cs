@@ -1,12 +1,10 @@
-﻿using EatvardDataAccessLibrary.Repositories.RestaurantRepository;
-using EatvardDataAccessLibrary.Repositories.UserRepository;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EatvardDataAccessLibrary;
+namespace Domain.Repositories;
 
 public interface IUnitOfWork : IDisposable
 {

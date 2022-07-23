@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using EatvardDataAccessLibrary.Models;
+using Domain.Models;
 
-namespace EatvardDataAccessLibrary.Repositories.RestaurantRepository;
+namespace Domain.Repositories;
 public interface IRestaurantRepository : IGenericRepository<Restaurant>
 {
     Task<IEnumerable<Restaurant>> GetAllAsync();

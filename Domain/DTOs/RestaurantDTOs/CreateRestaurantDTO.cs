@@ -1,24 +1,31 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace EatvardDataAccessLibrary.Models;
-
-public class Address
+namespace Domain.DTOs;
+public class CreateRestaurantDTO
 {
-    [Key]
-    public int Id { get; set; }
+    [Required]
+    public string Name { get; set; } = null!;
 
-    [MaxLength(200)]
+    [Required]
     public string StreetAddress { get; set; } = null!;
 
     [MaxLength(20)]
     public string StreetNumber { get; set; } = null!;
 
+    [Required]
     [MaxLength(100)]
     public string City { get; set; } = null!;
 
+    [Required]
     [MaxLength(100)]
     public string State { get; set; } = null!;
 
+    [Required]
     [MaxLength(20)]
     public string ZipCode { get; set; } = null!;
 }

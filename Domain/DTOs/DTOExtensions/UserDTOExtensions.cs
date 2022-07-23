@@ -1,12 +1,12 @@
 ﻿using Domain.DTOs;
-using EatvardDataAccessLibrary.Models;
+using Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EatvardDataAccessLibrary.DTOExtensions;
+namespace Domain.DTOs;
 
 public static class UserDTOExtensions
 {

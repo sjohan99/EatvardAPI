@@ -1,8 +1,7 @@
 ﻿using Domain.DTOs;
+using Domain.Repositories;
 using Domain.Utils.Security;
 using EatvardAPI.JWT;
-using EatvardDataAccessLibrary;
-using EatvardDataAccessLibrary.DTOExtensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

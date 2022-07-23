@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Domain.DTOs;
-using EatvardDataAccessLibrary.Models;
+using Domain.Models;
 using Xunit;
 
 namespace Domain.Tests;

@@ -1,12 +1,6 @@
-﻿using EatvardDataAccessLibrary.Data;
-using EatvardDataAccessLibrary.Repositories.RestaurantRepository;
-using EatvardDataAccessLibrary.Repositories.UserRepository;
+﻿using Domain.Repositories;
+using EatvardDataAccessLibrary.Data;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EatvardDataAccessLibrary;
 

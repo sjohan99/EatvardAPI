@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace EatvardDataAccessLibrary.Models;
+namespace Domain.Models;
 
 public class Restaurant
 {

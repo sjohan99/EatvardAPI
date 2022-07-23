@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Domain.DTOs.Restaurant;
-using EatvardDataAccessLibrary.Models;
+using Domain.DTOs;
+using Domain.Models;
 
-namespace EatvardDataAccessLibrary.DTOExtensions;
+namespace Domain.DTOs;
 public static class RestaurantDTOExtensions
 {
     public static void UpdateFromDTO(this Restaurant restaurant, UpdateRestaurantDTO restaurantDTO)

@@ -2,6 +2,8 @@
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
+using Domain.Models;
+using Domain.Repositories;
 using Domain.Utils;
 using Domain.Utils.CredentialsParsing;
 using Domain.Utils.Security;
@@ -65,7 +67,7 @@ public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSc
         return new Base64CredentialsParser(authenticationHeaderValue.Parameter);
     }
 
-    private AuthenticationTicket getAuthenticationTicket(EatvardDataAccessLibrary.Models.User user)
+    private AuthenticationTicket getAuthenticationTicket(User user)
     {
         var claims = new[] { new Claim(ClaimTypes.Name, user.Email) };
         var identity = new ClaimsIdentity(claims, Scheme.Name);

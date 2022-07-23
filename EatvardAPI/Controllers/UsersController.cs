@@ -4,16 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using EatvardDataAccessLibrary.Models;
 using Microsoft.AspNetCore.Authorization;
 using Domain.Utils.Security;
 using Domain.DTOs;
-using EatvardDataAccessLibrary.DTOExtensions;
+
 using EatvardAPI.JWT;
-using System.IdentityModel.Tokens.Jwt;
-using System.Text;
-using Microsoft.IdentityModel.Tokens;
-using System.Security.Claims;
+using Domain.Repositories;
+using Domain.Models;
 
 namespace EatvardDataAccessLibrary.Controllers
 {
