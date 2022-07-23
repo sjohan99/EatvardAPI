@@ -8,6 +8,7 @@ using EatvardDataAccessLibrary;
 using EatvardDataAccessLibrary.Models;
 using FakeItEasy;
 using Microsoft.AspNetCore.Mvc;
+using Moq;
 using Xunit;
 
 namespace EatvardAPI.Tests;
@@ -36,8 +37,23 @@ public class LoginControllerTests
         };
 
         fakeUnitOfWork = A.Fake<IUnitOfWork>();
-        A.CallTo(fakeUnitOfWork.Users).WithNonVoidReturnType().Returns(Task.FromResult(user));
+        //A.CallTo(fakeUnitOfWork.Users).WithNonVoidReturnType().Returns(Task.FromResult(user));
+        A.CallTo(() => fakeUnitOfWork.Users.FindOneByEmail(loginUserDTO.Email)).Returns(Task.FromResult(user));
         controller = new LoginController(fakeUnitOfWork, new JWTUtils("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"));
+    }
+
+    [Fact]
+    public async Task Login_NonExistingEmailShouldReturnUnauthorizedResponse()
+    {
+        // Experimenting with Moq as well
+        var mockUoW = new Mock<IUnitOfWork>();
+        mockUoW.Setup(uow => uow.Users.FindOneByEmail("")).ReturnsAsync((User?) null);
+        var moqController = new LoginController(mockUoW.Object, new JWTUtils("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"));
+
+        var actionResult = await moqController.Login(loginUserDTO);
+        var result = actionResult.Result as UnauthorizedResult;
+
+        Assert.Equal(401, result.StatusCode);
     }
 
     [Fact]

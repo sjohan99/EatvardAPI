@@ -16,6 +16,11 @@ public class UserRepository : GenericRepository<User>, IUserRepository
         return await Find(expression).FirstOrDefaultAsync();
     }
 
+    public async Task<User?> FindOneByEmail(string email)
+    {
+        return await Find(user => user.Email == email).FirstOrDefaultAsync();
+    }
+
     public async Task<IEnumerable<User>> GetAllUsersAsync()
     {
         return await GetAllAsync();
