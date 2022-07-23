@@ -20,7 +20,7 @@ public class EatvardContext : DbContext
     public DbSet<User> Users { get; set; } = null!;
     public DbSet<Restaurant> Restaurants { get; set; } = null!;
     public DbSet<Post> Posts { get; set; } = null!;
-    //public DbSet<Address> Addresses { get; set; } = null!;
+    public DbSet<Address> Addresses { get; set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
