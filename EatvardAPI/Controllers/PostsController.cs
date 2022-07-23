@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Domain.Models;
+using Domain.Repositories;
+using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -7,35 +9,24 @@ namespace EatvardAPI.Controllers;
 [ApiController]
 public class PostsController : ControllerBase
 {
-    // GET: api/<PostsController>
-    [HttpGet]
-    public IEnumerable<string> Get()
+    private readonly IUnitOfWork _unitOfWork;
+
+    public PostsController(IUnitOfWork unitOfWork)
     {
-        return new string[] { "value1", "value2" };
+        _unitOfWork = unitOfWork;
     }
 
     // GET api/<PostsController>/5
     [HttpGet("{id}")]
-    public string Get(int id)
+    public async Task<ActionResult<Post>> GetById(int id)
     {
-        return "value";
-    }
+        var post = await _unitOfWork.Posts.GetByIdAsync(id);
 
-    // POST api/<PostsController>
-    [HttpPost]
-    public void Post([FromBody] string value)
-    {
-    }
+        if (post == null)
+        {
+            return NotFound();
+        }
 
-    // PUT api/<PostsController>/5
-    [HttpPut("{id}")]
-    public void Put(int id, [FromBody] string value)
-    {
-    }
-
-    // DELETE api/<PostsController>/5
-    [HttpDelete("{id}")]
-    public void Delete(int id)
-    {
+        return Ok(post);
     }
 }

@@ -10,6 +10,7 @@ public interface IUnitOfWork : IDisposable
 {
     IUserRepository Users { get; }
     IRestaurantRepository Restaurants { get; }
+    IPostRepository Posts { get; }
     int Complete();
     Task<int> CompleteAsync();
 }
