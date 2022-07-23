@@ -31,5 +31,14 @@ public class EatvardContext : DbContext
             optionsBuilder.UseSqlServer(ConnectionString!);
         }
     }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<User>()
+            .HasIndex(u => u.Email)
+            .IsUnique();
+
+        modelBuilder.Entity<Restaurant>().HasIndex(r => r.Name).IsUnique();
+    }
 }
 

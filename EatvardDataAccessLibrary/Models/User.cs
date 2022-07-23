@@ -1,9 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace EatvardDataAccessLibrary.Models;
 
-[Index(nameof(Email), IsUnique = true)]
 public class User
 {
     [Key]
