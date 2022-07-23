@@ -17,4 +17,6 @@ public class Post
     public int Rating { get; set; }
 
     public int Cost { get; set; }
+
+    public virtual DateTime CreatedAt { get; set; } 
 }

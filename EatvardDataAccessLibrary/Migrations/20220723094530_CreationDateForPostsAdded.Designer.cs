@@ -4,6 +4,7 @@ using EatvardDataAccessLibrary.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EatvardDataAccessLibrary.Migrations
 {
     [DbContext(typeof(EatvardContext))]
-    partial class EatvardContextModelSnapshot : ModelSnapshot
+    [Migration("20220723094530_CreationDateForPostsAdded")]
+    partial class CreationDateForPostsAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -114,9 +116,6 @@ namespace EatvardDataAccessLibrary.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AddressId");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
 
                     b.ToTable("Restaurants");
                 });
