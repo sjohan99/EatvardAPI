@@ -16,7 +16,9 @@ public class Post
     [Range(1, 5)]
     public int Rating { get; set; }
 
-    public int Cost { get; set; }
+    public int? Cost { get; set; }
+
+    public string? Text { get; set; }
 
     public virtual DateTime CreatedAt { get; set; }
 }

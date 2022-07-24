@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.DTOs;
 using Domain.Models;
 using Domain.Repositories;
 using EatvardAPI.Controllers;
@@ -46,5 +47,17 @@ public class PostsControllerTest
         var result = (OkObjectResult?) actionResult.Result;
 
         Assert.Equal((int) HttpStatusCode.OK, result!.StatusCode);
+    }
+
+    [Fact]
+    public async Task Create_ShouldReturnOk()
+    {
+        var fakePostDTO = A.Fake<CreatePostDTO>();
+        A.CallTo(() => fakeUoW.CompleteAsync()).Returns(Task.FromResult(1));
+
+        var actionResult = await controller.Create(fakePostDTO);
+        var result = (CreatedAtActionResult?) actionResult.Result;
+
+        Assert.Equal((int) HttpStatusCode.Created, result!.StatusCode);
     }
 }
