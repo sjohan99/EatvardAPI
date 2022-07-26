@@ -10,15 +10,19 @@ public class UnitOfWork : IUnitOfWork
     public IUserRepository Users { get; private set; }
     public IRestaurantRepository Restaurants { get; private set; }
     public IPostRepository Posts { get; private set; }
+    public IPostCommentRepository PostComments { get; private set; }
+
     public UnitOfWork(EatvardContext context,
                       IUserRepository userRepository,
                       IRestaurantRepository restaurantRepository,
-                      IPostRepository postRepository)
+                      IPostRepository postRepository,
+                      IPostCommentRepository postCommentRepository)
     {
         _context = context;
         Users = userRepository;
         Restaurants = restaurantRepository;
         Posts = postRepository;
+        PostComments = postCommentRepository;
     }
 
     public void Dispose()

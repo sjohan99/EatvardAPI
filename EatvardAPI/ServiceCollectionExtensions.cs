@@ -44,11 +44,13 @@ public static class ServiceCollectionExtensions
         services.AddTransient<IUserRepository, UserRepository>();
         services.AddTransient<IRestaurantRepository, RestaurantRepository>();
         services.AddTransient<IPostRepository, PostRepository>();
+        services.AddTransient<IPostCommentRepository, PostCommentRepository>();
         services.AddTransient<IUnitOfWork, UnitOfWork>();
         services.AddDbContext<EatvardContext>(options =>
         {
             // UseLazyLoadingProxies() in order for nested entities to be populated when querying.
-            options.UseLazyLoadingProxies().UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+            //options.UseLazyLoadingProxies().UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
         });
 
         return services;

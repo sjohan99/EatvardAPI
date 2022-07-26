@@ -11,6 +11,7 @@ public interface IUnitOfWork : IDisposable
     IUserRepository Users { get; }
     IRestaurantRepository Restaurants { get; }
     IPostRepository Posts { get; }
+    IPostCommentRepository PostComments { get; }
     int Complete();
     Task<int> CompleteAsync();
 }

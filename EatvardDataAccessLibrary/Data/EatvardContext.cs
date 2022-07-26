@@ -21,6 +21,7 @@ public class EatvardContext : DbContext
     public DbSet<Restaurant> Restaurants { get; set; } = null!;
     public DbSet<Post> Posts { get; set; } = null!;
     public DbSet<Address> Addresses { get; set; } = null!;
+    public DbSet<PostComment> PostComments { get; set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -37,6 +38,7 @@ public class EatvardContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.EnforceUniqueUserEmail();
+        modelBuilder.AddPostCommentForeignKeys();
     }
 
     
