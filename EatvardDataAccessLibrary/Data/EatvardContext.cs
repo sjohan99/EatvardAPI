@@ -39,6 +39,7 @@ public class EatvardContext : DbContext
     {
         modelBuilder.EnforceUniqueUserEmail();
         modelBuilder.AddPostCommentForeignKeys();
+        modelBuilder.AddRestaurantAddressRequired();
     }
 
     
